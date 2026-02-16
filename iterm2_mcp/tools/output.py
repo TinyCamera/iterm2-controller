@@ -16,13 +16,21 @@ _ESCAPE_PATTERNS = re.compile(
     r"\x1b\[[0-9;]*[A-Za-z]"  # CSI sequences (e.g. color codes)
 )
 
+# iTerm2 OSC payloads that leak as bare text after AppleScript strips
+# the escape wrappers (e.g. "$ 6;1;bg;red;brightness;59")
+_BARE_OSC_PAYLOAD = re.compile(
+    r"\d+;\d+;bg;(?:red|green|blue);brightness;\d+",
+)
+
 # In-memory cursor state for watch_session
 _watch_cursors: dict[str, str] = {}
 
 
 def _strip_escape_sequences(text: str) -> str:
-    """Remove terminal escape sequences from raw iTerm2 output."""
-    return _ESCAPE_PATTERNS.sub("", text)
+    """Remove terminal escape sequences and leaked OSC payloads."""
+    text = _ESCAPE_PATTERNS.sub("", text)
+    text = _BARE_OSC_PAYLOAD.sub("", text)
+    return text
 
 
 async def _get_contents(session_id: str) -> str:
