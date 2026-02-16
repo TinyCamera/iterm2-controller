@@ -7,6 +7,27 @@ from ..sessions import resolve_session
 from .._server import mcp
 
 
+async def _send_command(session_id: str, command: str) -> None:
+    """Send a shell command to a session by ID."""
+    sid = applescript.escape(session_id)
+    safe_cmd = applescript.escape(command)
+    script = f'''
+tell application "iTerm2"
+    repeat with w in windows
+        repeat with t in tabs of w
+            repeat with s in sessions of t
+                if id of s is "{sid}" then
+                    tell s to write text "{safe_cmd}"
+                    return
+                end if
+            end repeat
+        end repeat
+    end repeat
+end tell
+'''
+    await applescript.run(script)
+
+
 async def _set_session_name(session_id: str, name: str) -> None:
     """Set the display name on a session by ID."""
     sid = applescript.escape(session_id)
@@ -50,15 +71,11 @@ async def iterm_new_tab(
     else:
         window_ref = "first window"
 
-    extras = ""
-    if command:
-        extras += f'\n            write text "{applescript.escape(command)}"'
-
     script = f'''
 tell application "iTerm2"
     tell {window_ref}
         set newTab to (create tab with default profile)
-        tell current session of newTab{extras}
+        tell current session of newTab
             set sid to id of it
             set stty to tty of it
         end tell
@@ -74,6 +91,9 @@ end tell
 
     if name:
         await _set_session_name(session_id, name)
+
+    if command:
+        await _send_command(session_id, command)
 
     return json.dumps({
         "status": "created",
@@ -104,10 +124,6 @@ async def iterm_split_pane(
 
     split_cmd = "split vertically" if direction == "vertical" else "split horizontally"
 
-    extras = ""
-    if command:
-        extras += f'\n                write text "{applescript.escape(command)}"'
-
     if identifier:
         session = await resolve_session(identifier)
         sid = applescript.escape(session["session_id"])
@@ -120,7 +136,7 @@ tell application "iTerm2"
                     tell s
                         set newSession to ({split_cmd} with default profile)
                     end tell
-                    tell newSession{extras}
+                    tell newSession
                         set rsid to id of it
                         set rtty to tty of it
                     end tell
@@ -139,7 +155,7 @@ tell application "iTerm2"
         tell current session of current tab
             set newSession to ({split_cmd} with default profile)
         end tell
-        tell newSession{extras}
+        tell newSession
             set rsid to id of it
             set rtty to tty of it
         end tell
@@ -159,6 +175,9 @@ end tell
 
     if name:
         await _set_session_name(session_id, name)
+
+    if command:
+        await _send_command(session_id, command)
 
     return json.dumps({
         "status": "created",
