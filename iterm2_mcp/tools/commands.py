@@ -90,15 +90,22 @@ async def iterm_send_keys(identifier: str, keys: str) -> str:
 
     key_list = keys.strip().split()
     commands: list[str] = []
+    invalid: list[str] = []
     for k in key_list:
         kl = k.lower()
         if kl in KEY_MAP:
             commands.append(KEY_MAP[kl])
-        elif kl.startswith("ctrl+") and len(kl) == 6:
+        elif kl.startswith("ctrl+") and len(kl) == 6 and kl[-1].isalpha():
             char_code = ord(kl[-1].lower()) - ord("a") + 1
             commands.append(f"write text (ASCII character {char_code})")
         else:
-            commands.append(f'write text "{applescript.escape(k)}" without newline')
+            invalid.append(k)
+
+    if invalid:
+        valid_keys = sorted(KEY_MAP.keys()) + ["ctrl+<a-z>"]
+        return json.dumps({
+            "error": f"Unknown key(s): {invalid}. Valid keys: {valid_keys}",
+        })
 
     tell_lines = "\n                    ".join(commands)
 
