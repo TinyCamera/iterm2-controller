@@ -103,7 +103,7 @@ async def iterm_get_session_by_name(name: str) -> str:
     matches = fuzzy_match(name, all_sessions)
     if not matches:
         return json.dumps({"error": f"No session matching '{name}'."})
-    return json.dumps(matches[:5], indent=2)
+    return json.dumps([c for _, c in matches[:5]], indent=2)
 
 
 @mcp.tool()

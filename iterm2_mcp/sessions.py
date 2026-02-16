@@ -24,8 +24,14 @@ def save_state(state: dict) -> None:
     SESSION_FILE.write_text(json.dumps(state, indent=2))
 
 
-def fuzzy_match(query: str, candidates: list[dict], key: str = "name") -> list[dict]:
-    """Return candidates sorted by fuzzy similarity to *query*."""
+_FUZZY_THRESHOLD = 0.5
+
+
+def fuzzy_match(query: str, candidates: list[dict], key: str = "name") -> list[tuple[float, dict]]:
+    """Return (score, candidate) pairs sorted by fuzzy similarity to *query*.
+
+    Only candidates scoring above ``_FUZZY_THRESHOLD`` are returned.
+    """
     scored = []
     q = query.lower()
     for c in candidates:
@@ -35,7 +41,7 @@ def fuzzy_match(query: str, candidates: list[dict], key: str = "name") -> list[d
             ratio += 0.4
         scored.append((ratio, c))
     scored.sort(key=lambda x: x[0], reverse=True)
-    return [c for r, c in scored if r > 0.25]
+    return [(r, c) for r, c in scored if r >= _FUZZY_THRESHOLD]
 
 
 async def resolve_session(identifier: str) -> dict:
@@ -45,17 +51,20 @@ async def resolve_session(identifier: str) -> dict:
     """
     all_sessions = await list_all_sessions()
 
+    # Exact match on session ID
     for s in all_sessions:
         if s["session_id"] == identifier:
             return s
 
+    # Exact match on TTY path
     for s in all_sessions:
         if s["tty"] == identifier:
             return s
 
+    # Fuzzy match on name
     matches = fuzzy_match(identifier, all_sessions)
     if matches:
-        return matches[0]
+        return matches[0][1]
 
     raise RuntimeError(
         f"No session found matching '{identifier}'. "
