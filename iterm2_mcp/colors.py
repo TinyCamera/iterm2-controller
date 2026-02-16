@@ -11,32 +11,43 @@ SCHEMES = {
 
 
 async def apply(session_id: str, scheme_name: str) -> None:
-    """Apply a tab color to a session by ID."""
+    """Apply a tab color to a session by ID.
+
+    Writes iTerm2 proprietary OSC sequences directly to the session's
+    TTY to avoid them appearing as visible text in the terminal.
+    """
     scheme = SCHEMES.get(scheme_name)
     if not scheme:
         return
 
+    # Resolve the TTY path for this session
     sid = applescript.escape(session_id)
-    tab = scheme["tab"]
-
     script = f'''
 tell application "iTerm2"
     repeat with w in windows
         repeat with t in tabs of w
             repeat with s in sessions of t
                 if id of s is "{sid}" then
-                    tell s
-                        set esc to ASCII character 27
-                        set bel to ASCII character 7
-                        write text esc & "]6;1;bg;red;brightness;{tab[0]}" & bel without newline
-                        write text esc & "]6;1;bg;green;brightness;{tab[1]}" & bel without newline
-                        write text esc & "]6;1;bg;blue;brightness;{tab[2]}" & bel without newline
-                    end tell
-                    return "ok"
+                    return tty of s
                 end if
             end repeat
         end repeat
     end repeat
+    return ""
 end tell
 '''
-    await applescript.run(script)
+    tty = await applescript.run(script)
+    if not tty:
+        return
+
+    tab = scheme["tab"]
+    payload = (
+        f"\x1b]6;1;bg;red;brightness;{tab[0]}\x07"
+        f"\x1b]6;1;bg;green;brightness;{tab[1]}\x07"
+        f"\x1b]6;1;bg;blue;brightness;{tab[2]}\x07"
+    )
+
+    # Write directly to TTY — bypasses the shell so nothing is echoed
+    with open(tty, "w") as f:
+        f.write(payload)
+        f.flush()
