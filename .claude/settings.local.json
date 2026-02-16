@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo view:*)",
+      "Bash(gh repo create:*)",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_split_pane",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_get_session_by_name",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_set_session_name",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_focus_session",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_send_command",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_read_output",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_send_keys",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_watch_session",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_new_tab",
+      "Bash(gh issue create:*)",
+      "mcp__plugin_iterm2-controller_iterm2-mcp__iterm_list_sessions",
+      "Bash(osascript:*)",
+      "Bash(/Users/nconroy/work/iterm2-controller/.venv/bin/python3:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(.venv/bin/python3:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh issue close:*)",
+      "Bash(1)",
+      "Bash(bg)",
+      "Bash(red)",
+      "Bash(brightness:*)",
+      "Bash(59\"\\).\nAdd a second regex pass to strip these bare iTerm2 OSC payloads.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "iterm2-mcp"
+  ]
+}
