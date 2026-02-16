@@ -7,6 +7,27 @@ from ..sessions import resolve_session
 from .._server import mcp
 
 
+async def _set_session_name(session_id: str, name: str) -> None:
+    """Set the display name on a session by ID."""
+    sid = applescript.escape(session_id)
+    safe_name = applescript.escape(name)
+    script = f'''
+tell application "iTerm2"
+    repeat with w in windows
+        repeat with t in tabs of w
+            repeat with s in sessions of t
+                if id of s is "{sid}" then
+                    tell s to set name to "{safe_name}"
+                    return
+                end if
+            end repeat
+        end repeat
+    end repeat
+end tell
+'''
+    await applescript.run(script)
+
+
 @mcp.tool()
 async def iterm_new_tab(
     command: str = "",
@@ -30,8 +51,6 @@ async def iterm_new_tab(
         window_ref = "first window"
 
     extras = ""
-    if name:
-        extras += f'\n            set name to "{applescript.escape(name)}"'
     if command:
         extras += f'\n            write text "{applescript.escape(command)}"'
 
@@ -42,10 +61,9 @@ tell application "iTerm2"
         tell current session of newTab{extras}
             set sid to id of it
             set stty to tty of it
-            set sname to name of it
         end tell
     end tell
-    return sid & "||" & stty & "||" & sname
+    return sid & "||" & stty
 end tell
 '''
     raw = await applescript.run(script)
@@ -54,11 +72,14 @@ end tell
 
     await colors.apply(session_id, "background_task")
 
+    if name:
+        await _set_session_name(session_id, name)
+
     return json.dumps({
         "status": "created",
         "session_id": session_id,
         "tty": p[1] if len(p) > 1 else "",
-        "name": p[2] if len(p) > 2 else "",
+        "name": name,
     })
 
 
@@ -84,8 +105,6 @@ async def iterm_split_pane(
     split_cmd = "split vertically" if direction == "vertical" else "split horizontally"
 
     extras = ""
-    if name:
-        extras += f'\n                set name to "{applescript.escape(name)}"'
     if command:
         extras += f'\n                write text "{applescript.escape(command)}"'
 
@@ -104,9 +123,8 @@ tell application "iTerm2"
                     tell newSession{extras}
                         set rsid to id of it
                         set rtty to tty of it
-                        set rname to name of it
                     end tell
-                    return rsid & "||" & rtty & "||" & rname
+                    return rsid & "||" & rtty
                 end if
             end repeat
         end repeat
@@ -124,10 +142,9 @@ tell application "iTerm2"
         tell newSession{extras}
             set rsid to id of it
             set rtty to tty of it
-            set rname to name of it
         end tell
     end tell
-    return rsid & "||" & rtty & "||" & rname
+    return rsid & "||" & rtty
 end tell
 '''
 
@@ -140,10 +157,13 @@ end tell
 
     await colors.apply(session_id, "split_pane")
 
+    if name:
+        await _set_session_name(session_id, name)
+
     return json.dumps({
         "status": "created",
         "direction": direction,
         "session_id": session_id,
         "tty": p[1] if len(p) > 1 else "",
-        "name": p[2] if len(p) > 2 else "",
+        "name": name,
     })
