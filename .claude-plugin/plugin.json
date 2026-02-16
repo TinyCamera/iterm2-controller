@@ -1,0 +1,7 @@
+{
+  "name": "iterm2-controller",
+  "version": "0.1.0",
+  "description": "Gives Claude Code control over iTerm2 terminals via AppleScript",
+  "author": { "name": "Niall Conroy" },
+  "keywords": ["iterm2", "terminal", "applescript", "mcp"]
+}

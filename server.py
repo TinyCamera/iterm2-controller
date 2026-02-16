@@ -1,4 +1,4 @@
-#!/Users/nconroy/.claude/mcp-servers/iterm2-mcp/.venv/bin/python3
+#!/usr/bin/env python3
 """iTerm2 MCP Server entrypoint."""
 
 from iterm2_mcp._server import mcp

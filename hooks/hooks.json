@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"iTerm2 session TTY: $(tty) — call iterm_register_session with this path to link this terminal.\""
+          }
+        ]
+      }
+    ]
+  }
+}
