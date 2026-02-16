@@ -1,13 +1,28 @@
 """Output reading tools: read_output, watch_session."""
 
 import json
+import re
 
 from .. import applescript
 from ..sessions import resolve_session
 from .._server import mcp
 
+# Patterns for terminal escape sequences that leak into iTerm2 contents
+_ESCAPE_PATTERNS = re.compile(
+    r"\x1b\]"           # OSC start (ESC ])
+    r"[^\x07\x1b]*"     # payload (anything except BEL or ESC)
+    r"(?:\x07|\x1b\\)"  # OSC end (BEL or ST)
+    r"|"
+    r"\x1b\[[0-9;]*[A-Za-z]"  # CSI sequences (e.g. color codes)
+)
+
 # In-memory cursor state for watch_session
 _watch_cursors: dict[str, str] = {}
+
+
+def _strip_escape_sequences(text: str) -> str:
+    """Remove terminal escape sequences from raw iTerm2 output."""
+    return _ESCAPE_PATTERNS.sub("", text)
 
 
 async def _get_contents(session_id: str) -> str:
@@ -27,7 +42,8 @@ tell application "iTerm2"
     return ""
 end tell
 '''
-    return await applescript.run(script)
+    raw = await applescript.run(script)
+    return _strip_escape_sequences(raw)
 
 
 @mcp.tool()
