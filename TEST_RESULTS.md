@@ -2,18 +2,20 @@
 
 Functional tests for all 11 MCP tools. Run these manually against a live iTerm2 instance.
 
-**Date last run:** 2026-02-15
+**Date last run:** 2026-02-16
 **Plugin Version:** 0.1.0
-**Score:** 28/33 passed (85%)
+**Score:** 33/33 passed (100%)
 
 ## Known Issues
 
-| # | Title | Link |
-|---|-------|------|
-| 1 | `name` param ignored in `iterm_new_tab` and `iterm_split_pane` | [#1](https://github.com/TinyCamera/iterm2-controller/issues/1) |
-| 2 | `command` param ignored in `iterm_new_tab` | [#2](https://github.com/TinyCamera/iterm2-controller/issues/2) |
-| 3 | Fuzzy matching silently misdirects `focus_session`, `read_output`, `watch_session` | [#3](https://github.com/TinyCamera/iterm2-controller/issues/3) |
-| 4 | `iterm_send_keys` accepts invalid key names without error | [#4](https://github.com/TinyCamera/iterm2-controller/issues/4) |
+All previously tracked issues have been fixed:
+
+| # | Title | Link | Status |
+|---|-------|------|--------|
+| 1 | `name` param ignored in `iterm_new_tab` and `iterm_split_pane` | [#1](https://github.com/TinyCamera/iterm2-controller/issues/1) | Fixed |
+| 2 | `command` param ignored in `iterm_new_tab` | [#2](https://github.com/TinyCamera/iterm2-controller/issues/2) | Fixed |
+| 3 | Fuzzy matching silently misdirects `focus_session`, `read_output`, `watch_session` | [#3](https://github.com/TinyCamera/iterm2-controller/issues/3) | Fixed |
+| 4 | `iterm_send_keys` accepts invalid key names without error | [#4](https://github.com/TinyCamera/iterm2-controller/issues/4) | Fixed |
 
 ---
 
@@ -152,7 +154,7 @@ should be replaced with real values from your environment as you go.
 
 **Verify:** Also check `iterm_list_sessions` to see if the new session's name is "test-tab".
 
-**Last result:** FAIL — name is ignored, session gets default name. See Issue #1.
+**Last result:** PASS
 
 ---
 
@@ -163,7 +165,7 @@ should be replaced with real values from your environment as you go.
 
 **Expected:** New tab created. Run `iterm_read_output(identifier=$NEW_SESSION_ID, lines=10)` — output should contain `hello_from_new_tab`.
 
-**Last result:** FAIL — command is never executed, output shows only shell init. See Issue #2.
+**Last result:** PASS
 
 ---
 
@@ -198,7 +200,7 @@ should be replaced with real values from your environment as you go.
 
 **Expected:** New pane created. Run `iterm_get_session_by_name(name="test-split")` — it should find the session.
 
-**Last result:** FAIL — name is ignored, same as Issue #1.
+**Last result:** PASS
 
 ---
 
@@ -263,7 +265,7 @@ should be replaced with real values from your environment as you go.
 
 **Expected:** Error indicating no session was found.
 
-**Last result:** FAIL — silently focuses a random existing session instead of returning an error. See Issue #3.
+**Last result:** PASS
 
 ---
 
@@ -332,7 +334,7 @@ should be replaced with real values from your environment as you go.
 
 **Expected:** Error response listing valid key names.
 
-**Last result:** FAIL — returns `status: "sent"` and the literal text "ctrl+invalid" gets typed into the terminal. See Issue #4.
+**Last result:** PASS
 
 ---
 
@@ -443,7 +445,7 @@ should be replaced with real values from your environment as you go.
 
 **Expected:** Error response indicating no matching session.
 
-**Last result:** FAIL — silently reads output from a random existing session. Same root cause as Issue #3.
+**Last result:** PASS
 
 ---
 

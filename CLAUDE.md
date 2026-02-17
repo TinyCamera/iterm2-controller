@@ -50,4 +50,4 @@ No automated tests. Testing is manual per `TEST_RESULTS.md` which documents 33 t
 
 ## Known Issues
 
-See `TEST_RESULTS.md` for current status. Notable: `name` and `command` params are ignored in `iterm_new_tab`/`iterm_split_pane`, fuzzy matching can silently misdirect, `iterm_send_keys` lacks key name validation.
+See `TEST_RESULTS.md` for current status. All previously tracked issues (Issues #1–#4) have been fixed. Test score: 33/33 (100%).

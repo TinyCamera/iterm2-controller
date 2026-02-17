@@ -1,11 +1,13 @@
 {
+  "description": "Displays the current TTY path on session start so users can register it with the iTerm2 MCP server.",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"iTerm2 session TTY: $(tty) — call iterm_register_session with this path to link this terminal.\""
+            "command": "echo \"iTerm2 session TTY: $(tty) — call iterm_register_session with this path to link this terminal.\"",
+            "statusMessage": "Detecting iTerm2 session..."
           }
         ]
       }

@@ -1,7 +1,15 @@
 {
   "name": "iterm2-controller",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Gives Claude Code control over iTerm2 terminals via AppleScript",
   "author": { "name": "Niall Conroy" },
-  "keywords": ["iterm2", "terminal", "applescript", "mcp"]
+  "repository": "https://github.com/nconroy/iterm2-controller",
+  "license": "MIT",
+  "keywords": ["iterm2", "terminal", "applescript", "mcp"],
+  "mcpServers": {
+    "iterm2-mcp": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/.venv/bin/python3",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/server.py"]
+    }
+  }
 }

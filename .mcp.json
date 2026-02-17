@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "iterm2-mcp": {
-      "command": "${CLAUDE_PLUGIN_ROOT}/.venv/bin/python3",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/server.py"]
-    }
-  }
-}
