@@ -22,6 +22,8 @@ claude --plugin-dir /path/to/iterm2-controller
 
 ## Setup
 
+On first use, macOS will prompt you to allow your terminal to control iTerm2 via AppleScript. Grant this permission — it's a one-time dialog.
+
 On session start, the plugin displays your TTY path. Register it to link your terminal:
 
 ```

@@ -26,7 +26,18 @@
       "Bash(bg)",
       "Bash(red)",
       "Bash(brightness:*)",
-      "Bash(59\"\\).\nAdd a second regex pass to strip these bare iTerm2 OSC payloads.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(59\"\\).\nAdd a second regex pass to strip these bare iTerm2 OSC payloads.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(/Users/nconroy/work/iterm2-controller/.venv/bin/pip show mcp)",
+      "Bash(printf:*)",
+      "Bash(/Users/nconroy/work/iterm2-controller/.venv/bin/pip:*)",
+      "Bash(.venv/bin/pip show:*)",
+      "Bash(claude mcp reset:*)",
+      "Bash(echo:*)",
+      "mcp__iterm2-mcp__iterm_split_pane",
+      "mcp__iterm2-mcp__iterm_send_command",
+      "mcp__iterm2-mcp__iterm_send_keys",
+      "WebSearch"
     ]
   },
   "enableAllProjectMcpServers": true,
