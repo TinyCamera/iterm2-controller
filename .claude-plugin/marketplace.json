@@ -10,8 +10,8 @@
     {
       "name": "iterm2-controller",
       "source": {
-        "source": "github",
-        "repo": "TinyCamera/iterm2-controller"
+        "source": "url",
+        "url": "https://github.com/TinyCamera/iterm2-controller.git"
       },
       "description": "Gives Claude Code control over iTerm2 terminals via AppleScript — create tabs, split panes, send commands, read output, and monitor sessions"
     }
