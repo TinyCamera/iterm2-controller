@@ -1,0 +1,19 @@
+{
+  "name": "iterm2-controller-marketplace",
+  "owner": {
+    "name": "nconroy"
+  },
+  "metadata": {
+    "description": "iTerm2 terminal control for Claude Code via AppleScript"
+  },
+  "plugins": [
+    {
+      "name": "iterm2-controller",
+      "source": {
+        "source": "github",
+        "repo": "TinyCamera/iterm2-controller"
+      },
+      "description": "Gives Claude Code control over iTerm2 terminals via AppleScript — create tabs, split panes, send commands, read output, and monitor sessions"
+    }
+  ]
+}

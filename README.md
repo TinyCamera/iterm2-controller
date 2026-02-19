@@ -10,14 +10,9 @@ A Claude Code plugin that gives Claude control over iTerm2 terminals via AppleSc
 
 ## Installation
 
-```bash
-claude plugin install /path/to/iterm2-controller
 ```
-
-Or for local development:
-
-```bash
-claude --plugin-dir /path/to/iterm2-controller
+/plugin marketplace add TinyCamera/iterm2-controller
+/plugin install iterm2-controller
 ```
 
 ## Setup

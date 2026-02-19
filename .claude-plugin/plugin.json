@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Gives Claude Code control over iTerm2 terminals via AppleScript",
   "author": { "name": "Niall Conroy" },
-  "repository": "https://github.com/nconroy/iterm2-controller",
+  "repository": "https://github.com/TinyCamera/iterm2-controller",
   "license": "MIT",
   "keywords": ["iterm2", "terminal", "applescript", "mcp"],
   "mcpServers": {
